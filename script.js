@@ -33,23 +33,24 @@ async function getMovieApi(movie, countryCode) {
         const watchProvider = await fetch(`https://api.themoviedb.org/3/movie/${movieID}/watch/providers?api_key=${apiKey}`)
         const watchProviderData = await watchProvider.json()
 
-        console.log(movieData)
         console.log(movieData.results[0].original_title)
         console.log(movieData.results[0].overview)
         console.log(movieData.results[0].poster_path)
-        console.log(watchProviderData.results[countryCode.toUpperCase()])
 
         const freeStream = watchProviderData.results[countryCode.toUpperCase()].flatrate;
         const buyToStream = watchProviderData.results[countryCode.toUpperCase()].buy;
 
 
-        for(i=0; i < freeStream.length; i++){
+        for(let i=0; i < freeStream.length; i++){
             console.log(freeStream[i].provider_name)
+            console.log(freeStream[i].logo_path)
+
         }
 
 
-        for(i=0; i < buyToStream.length; i++){
+        for(let i=0; i < buyToStream.length; i++){
             console.log(buyToStream[i].provider_name)
+            console.log(buyToStream[i].logo_path)
         }
 
     } catch (err){
