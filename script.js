@@ -39,6 +39,19 @@ async function getMovieApi(movie, countryCode) {
         console.log(movieData.results[0].poster_path)
         console.log(watchProviderData.results[countryCode.toUpperCase()])
 
+        const freeStream = watchProviderData.results[countryCode.toUpperCase()].flatrate;
+        const buyToStream = watchProviderData.results[countryCode.toUpperCase()].buy;
+
+
+        for(i=0; i < freeStream.length; i++){
+            console.log(freeStream[i].provider_name)
+        }
+
+
+        for(i=0; i < buyToStream.length; i++){
+            console.log(buyToStream[i].provider_name)
+        }
+
     } catch (err){
         console.error(err);
     }
@@ -48,10 +61,12 @@ async function getMovieApi(movie, countryCode) {
 
 const btn = document.querySelector('button');
 const input = document.querySelector('input');
+
 btn.addEventListener('click', async () => {
     const movieName = input.value
     const {lat, lon} = await getUserLocation()
     const countryCode = await getCountryCode(lat, lon);
-    console.log('Country code in click handler:', countryCode); 
+
     getMovieApi(movieName, countryCode);
 })
+
