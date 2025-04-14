@@ -1,7 +1,7 @@
-navigator.geolocation.getCurrentPosition(position => {
+/*navigator.geolocation.getCurrentPosition(position => {
     const lat = position.coords.latitude;
     const lon = position.coords.longitude
-    
+
     async function getCountryCode(){
         const apiKey = 'pk.3351a15efd4d628c08b6f7611d957d77';
     
@@ -21,5 +21,19 @@ navigator.geolocation.getCurrentPosition(position => {
     console.error('Location access denied', error)
 });
 
+*/
 
+function getUserLocation(){
+    new Promise((resolve, reject) => {
+        navigator.geolocation.getCurrentPosition(position => {
+            const lat = position.coords.latitude;
+            const lon = position.coords.longitude
+            console.log(lat,lon)
+            resolve(lat, lon);
+        },  error => {
+            reject('Location access denied', error)
+        })
+    })
+}
 
+getUserLocation()
