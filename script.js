@@ -33,10 +33,10 @@ async function fetchLocationAndCountry(){
 
 fetchLocationAndCountry()
 
-async function getMovieApi() {
+async function getMovieApi(movie) {
     const apiKey = 'e36770cdb42c075e2599fed112cce5c5'
     try {
-        const movieApiLink = await fetch(`https://api.themoviedb.org/3/search/movie?api_key=${apiKey}&query=barbie`)
+        const movieApiLink = await fetch(`https://api.themoviedb.org/3/search/movie?api_key=${apiKey}&query=${movie}`)
         const movieData = await movieApiLink.json()
         console.log(movieData)
     } catch (err){
@@ -44,3 +44,9 @@ async function getMovieApi() {
     }
 }
 
+
+const btn = document.querySelector('button');
+const input = document.querySelector('input');
+btn.addEventListener('click',() => {
+    getMovieApi(input.value);
+})
