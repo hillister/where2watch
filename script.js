@@ -16,7 +16,6 @@ async function getCountryCode(lat, lon){
     try {
         const apiLink = await fetch(`https://us1.locationiq.com/v1/reverse?key=${apiKey}&lat=${lat}&lon=${lon}&format=json&`)
         const apiData = await apiLink.json()
-        console.log(apiData)
         console.log(apiData.address.country_code)
     }catch(err) {
         console.error('Something went wrong:', err)
@@ -33,3 +32,16 @@ async function fetchLocationAndCountry(){
 }
 
 fetchLocationAndCountry()
+
+async function getMovieApi() {
+    const apiKey = 'e36770cdb42c075e2599fed112cce5c5'
+    try {
+        const movieApiLink = await fetch(`https://api.themoviedb.org/3/search/movie?api_key=${apiKey}&query=barbie`)
+        const movieData = await movieApiLink.json()
+        console.log(movieData)
+    } catch (err){
+        console.error(err);
+    }
+}
+
+getMovieApi()
