@@ -48,8 +48,6 @@ async function getMovieApi(movie, countryCode) {
         const watchProvider = await fetch(`https://api.themoviedb.org/3/movie/${movieID}/watch/providers?api_key=${apiKey}`)
         const watchProviderData = await watchProvider.json()
 
-        console.log(watchProviderData)
-
         const countryData = watchProviderData.results[countryCode.toUpperCase()]
 
         if(countryData){
@@ -58,11 +56,21 @@ async function getMovieApi(movie, countryCode) {
             const buyToStream = countryData.buy || [];
 
             if(freeStream.length > 0 || toRent.length > 0 || buyToStream.length > 0){
+                const streamingDIV = document.getElementById('streaming');
+                
+
                 if(freeStream.length > 0){
                     for(let i=0; i < freeStream.length; i++){
-                        console.log(freeStream[i].provider_name)
-                        console.log(freeStream[i].logo_path)
-            
+                        const provider = freeStream[i].provider_name;
+                        const providerElement = document.createElement('div')
+                        providerElement.innerHTML = provider;
+
+                        const logo = freeStream[i].logo_path;
+                        const logoElement = document.createElement('div')
+                        logoElement.innerHTML = logo;
+                        
+                        streamingDIV.appendChild(providerElement)
+                        streamingDIV.appendChild(logoElement)            
                     }
                 }
 
