@@ -42,7 +42,7 @@ async function getMovieApi(movie, countryCode) {
 
         const posterURL = movieData.results[0].poster_path;
         const poster = document.createElement('img');
-        poster.src = `https://image.tmdb.org/t/p/w500${posterURL}`;
+        poster.src = `https://image.tmdb.org/t/p/w400${posterURL}`;
         posterDIV.appendChild(poster);
 
         const watchProvider = await fetch(`https://api.themoviedb.org/3/movie/${movieID}/watch/providers?api_key=${apiKey}`)
@@ -72,6 +72,7 @@ async function getMovieApi(movie, countryCode) {
 
                         const logoPath = freeStream[i].logo_path;
                         const logo = document.createElement('img');
+                        logo.classList.add('logoImg')
                         logo.src = `https://image.tmdb.org/t/p/w92${logoPath}`
 
                         const wrapper = document.createElement('div');
@@ -90,6 +91,7 @@ async function getMovieApi(movie, countryCode) {
 
                         const logoPath = toRent[i].logo_path;
                         const logo = document.createElement('img');
+                        logo.classList.add('logoImg')
                         logo.src = `https://image.tmdb.org/t/p/w92${logoPath}`
                         
 
@@ -109,6 +111,7 @@ async function getMovieApi(movie, countryCode) {
 
                         const logoPath = buyToStream[i].logo_path;
                         const logo = document.createElement('img');
+                        logo.classList.add('logoImg')
                         logo.src = `https://image.tmdb.org/t/p/w92${logoPath}`
 
 
@@ -116,7 +119,7 @@ async function getMovieApi(movie, countryCode) {
                         wrapper.classList.add('provider')
                         wrapper.appendChild(logo);
                         wrapper.appendChild(buyElement)
-                        
+
                         buyRow.appendChild(wrapper)            
                     }    
                 } 
@@ -141,6 +144,11 @@ btn.addEventListener('click', async () => {
     const movieName = input.value
     const {lat, lon} = await getUserLocation()
     const countryCode = await getCountryCode(lat, lon);
+
+    const labels = document.querySelectorAll('.label')
+    labels.forEach(label => {
+        label.style.visibility = 'visible';
+    });
 
     getMovieApi(movieName, countryCode);
 })
