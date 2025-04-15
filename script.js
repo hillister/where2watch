@@ -58,12 +58,13 @@ async function getMovieApi(movie, countryCode) {
             const buyToStream = countryData.buy || [];
 
             if(freeStream.length > 0 || toRent.length > 0 || buyToStream.length > 0){
-                const freeDIV = document.getElementById('freeStream');
-                const buyDIV = document.getElementById('buyStream');
+                const freeRow = document.querySelector('#freeStream .provider-row');
+                const buyRow = document.querySelector('#buyStream .provider-row');
+                freeRow.innerHTML = '';
+                buyRow.innerHTML = '';
                 
 
                 if(freeStream.length > 0){
-                    freeDIV.innerHTML = 'Free Streaming'
                     for(let i=0; i < freeStream.length; i++){
                         const provider = freeStream[i].provider_name;
                         const providerElement = document.createElement('div')
@@ -73,13 +74,15 @@ async function getMovieApi(movie, countryCode) {
                         const logo = document.createElement('img');
                         logo.src = `https://image.tmdb.org/t/p/w92${logoPath}`
 
-                        freeDIV.appendChild(providerElement)
-                        freeDIV.appendChild(logo)            
+                        const wrapper = document.createElement('div');
+                        wrapper.classList.add('provider')
+                        wrapper.appendChild(logo);
+                        wrapper.appendChild(providerElement)
+                        freeRow.appendChild(wrapper)        
                     }
                 }
 
                 if(toRent.length > 0){
-                    freeDIV.innerHTML = 'Free Streaming'
                     for(let i=0; i < toRent.length; i++){
                         const providerRent = toRent[i].provider_name;
                         const rentElement = document.createElement('div')
@@ -88,14 +91,17 @@ async function getMovieApi(movie, countryCode) {
                         const logoPath = toRent[i].logo_path;
                         const logo = document.createElement('img');
                         logo.src = `https://image.tmdb.org/t/p/w92${logoPath}`
+                        
 
-                        freeDIV.appendChild(rentElement)
-                        freeDIV.appendChild(logo)            
+                        const wrapper = document.createElement('div');
+                        wrapper.classList.add('provider')
+                        wrapper.appendChild(logo);
+                        wrapper.appendChild(rentElement)
+                        freeRow.appendChild(wrapper) 
                     }
                 }
 
                 if(buyToStream.length > 0){
-                    buyDIV.innerHTML = 'To Buy'
                     for(let i=0; i < buyToStream.length; i++){
                         const providerBuy = buyToStream[i].provider_name;
                         const buyElement = document.createElement('div')
@@ -105,8 +111,13 @@ async function getMovieApi(movie, countryCode) {
                         const logo = document.createElement('img');
                         logo.src = `https://image.tmdb.org/t/p/w92${logoPath}`
 
-                        buyDIV.appendChild(buyElement)
-                        buyDIV.appendChild(logo)            
+
+                        const wrapper = document.createElement('div');
+                        wrapper.classList.add('provider')
+                        wrapper.appendChild(logo);
+                        wrapper.appendChild(buyElement)
+                        
+                        buyRow.appendChild(wrapper)            
                     }    
                 } 
             } else {
