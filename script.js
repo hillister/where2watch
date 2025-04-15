@@ -48,18 +48,22 @@ async function getMovieApi(movie, countryCode) {
         const watchProvider = await fetch(`https://api.themoviedb.org/3/movie/${movieID}/watch/providers?api_key=${apiKey}`)
         const watchProviderData = await watchProvider.json()
 
-        const countryData = watchProviderData.results[countryCode.toUpperCase()]
+        
 
+        const countryData = watchProviderData.results[countryCode.toUpperCase()]
+        console.log(countryData)
         if(countryData){
             const freeStream = countryData.flatrate || [];
             const toRent = countryData.rent || [];
             const buyToStream = countryData.buy || [];
 
             if(freeStream.length > 0 || toRent.length > 0 || buyToStream.length > 0){
-                const streamingDIV = document.getElementById('streaming');
+                const freeDIV = document.getElementById('freeStream');
+                const buyDIV = document.getElementById('buyStream');
                 
 
                 if(freeStream.length > 0){
+                    freeDIV.innerHTML = 'Free Streaming'
                     for(let i=0; i < freeStream.length; i++){
                         const provider = freeStream[i].provider_name;
                         const providerElement = document.createElement('div')
@@ -69,23 +73,40 @@ async function getMovieApi(movie, countryCode) {
                         const logo = document.createElement('img');
                         logo.src = `https://image.tmdb.org/t/p/w92${logoPath}`
 
-                        streamingDIV.appendChild(providerElement)
-                        streamingDIV.appendChild(logo)            
+                        freeDIV.appendChild(providerElement)
+                        freeDIV.appendChild(logo)            
                     }
                 }
 
                 if(toRent.length > 0){
+                    freeDIV.innerHTML = 'Free Streaming'
                     for(let i=0; i < toRent.length; i++){
-                        console.log(toRent[i].provider_name)
-                        console.log(toRent[i].logo_path)
-            
+                        const providerRent = toRent[i].provider_name;
+                        const rentElement = document.createElement('div')
+                        rentElement.innerHTML = providerRent;
+
+                        const logoPath = toRent[i].logo_path;
+                        const logo = document.createElement('img');
+                        logo.src = `https://image.tmdb.org/t/p/w92${logoPath}`
+
+                        freeDIV.appendChild(rentElement)
+                        freeDIV.appendChild(logo)            
                     }
                 }
 
                 if(buyToStream.length > 0){
+                    buyDIV.innerHTML = 'To Buy'
                     for(let i=0; i < buyToStream.length; i++){
-                        console.log(buyToStream[i].provider_name)
-                        console.log(buyToStream[i].logo_path)
+                        const providerBuy = buyToStream[i].provider_name;
+                        const buyElement = document.createElement('div')
+                        buyElement.innerHTML = providerBuy;
+
+                        const logoPath = buyToStream[i].logo_path;
+                        const logo = document.createElement('img');
+                        logo.src = `https://image.tmdb.org/t/p/w92${logoPath}`
+
+                        buyDIV.appendChild(buyElement)
+                        buyDIV.appendChild(logo)            
                     }    
                 } 
             } else {
