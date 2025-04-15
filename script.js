@@ -33,6 +33,11 @@ async function getMovieApi(movie, countryCode) {
         const watchProvider = await fetch(`https://api.themoviedb.org/3/movie/${movieID}/watch/providers?api_key=${apiKey}`)
         const watchProviderData = await watchProvider.json()
 
+        const title = document.getElementById('title');
+        title.innerHTML = movieData.results[0].original_title;
+
+        const description = document.getElementById('description');
+        description.innerHTML = movieData.results[0].overview;
         console.log(movieData.results[0].original_title)
         console.log(movieData.results[0].overview)
         console.log(movieData.results[0].poster_path)
