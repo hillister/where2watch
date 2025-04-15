@@ -33,33 +33,44 @@ async function getMovieApi(movie, countryCode) {
         const watchProvider = await fetch(`https://api.themoviedb.org/3/movie/${movieID}/watch/providers?api_key=${apiKey}`)
         const watchProviderData = await watchProvider.json()
 
+        console.log(watchProviderData)
+
         const title = document.getElementById('title');
         title.innerHTML = movieData.results[0].original_title;
 
         const description = document.getElementById('description');
         description.innerHTML = movieData.results[0].overview;
 
-        const containerDIV = document.querySelector('.container');
+        
+        const posterDIV = document.querySelector('#poster');
+        posterDIV.innerHTML = '';
 
         const posterURL = movieData.results[0].poster_path;
         const poster = document.createElement('img');
         poster.src = `https://image.tmdb.org/t/p/w500${posterURL}`;
-        containerDIV.appendChild(poster);
+        posterDIV.appendChild(poster);
 
         const freeStream = watchProviderData.results[countryCode.toUpperCase()].flatrate;
         const buyToStream = watchProviderData.results[countryCode.toUpperCase()].buy;
 
-
-        for(let i=0; i < freeStream.length; i++){
-            console.log(freeStream[i].provider_name)
-            console.log(freeStream[i].logo_path)
-
+        if(freeStream){
+            for(let i=0; i < freeStream.length; i++){
+                console.log(freeStream[i].provider_name)
+                console.log(freeStream[i].logo_path)
+    
+            }
+        } else {
+            console.log('No free streaming')
         }
 
 
-        for(let i=0; i < buyToStream.length; i++){
-            console.log(buyToStream[i].provider_name)
-            console.log(buyToStream[i].logo_path)
+        if(buyToStream){
+            for(let i=0; i < buyToStream.length; i++){
+                console.log(buyToStream[i].provider_name)
+                console.log(buyToStream[i].logo_path)
+            }    
+        } else {
+            console,log('no where to buy')
         }
 
     } catch (err){
