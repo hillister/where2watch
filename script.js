@@ -65,12 +65,12 @@ async function getMovieApi(movie, countryCode) {
                         const providerElement = document.createElement('div')
                         providerElement.innerHTML = provider;
 
-                        const logo = freeStream[i].logo_path;
-                        const logoElement = document.createElement('div')
-                        logoElement.innerHTML = logo;
-                        
+                        const logoPath = freeStream[i].logo_path;
+                        const logo = document.createElement('img');
+                        logo.src = `https://image.tmdb.org/t/p/w92${logoPath}`
+
                         streamingDIV.appendChild(providerElement)
-                        streamingDIV.appendChild(logoElement)            
+                        streamingDIV.appendChild(logo)            
                     }
                 }
 
