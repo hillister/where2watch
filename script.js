@@ -89,7 +89,7 @@ async function getMovieApi(movie, countryCode) {
                         buyRow.appendChild(wrapper)            
                     }    
                 } 
-                
+
                 if(freeStream.length > 0){
                     for(let i=0; i < freeStream.length; i++){
                         const id = freeStream[i].provider_id;
@@ -154,7 +154,7 @@ async function getMovieApi(movie, countryCode) {
 const btn = document.querySelector('button');
 const input = document.querySelector('input');
 
-btn.addEventListener('click', async () => {
+async function handleSearch() {
     const movieName = input.value
     const {lat, lon} = await getUserLocation()
     const countryCode = await getCountryCode(lat, lon);
@@ -165,5 +165,13 @@ btn.addEventListener('click', async () => {
     });
 
     getMovieApi(movieName, countryCode);
-})
+};
 
+
+
+btn.addEventListener('click', handleSearch);
+input.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') {
+        handleSearch();
+    }
+});
