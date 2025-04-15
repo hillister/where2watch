@@ -156,15 +156,24 @@ const input = document.querySelector('input');
 
 async function handleSearch() {
     const movieName = input.value
-    const {lat, lon} = await getUserLocation()
-    const countryCode = await getCountryCode(lat, lon);
 
-    const labels = document.querySelectorAll('.label')
-    labels.forEach(label => {
-        label.style.visibility = 'visible';
-    });
+    setTimeout(async () => {
+        try {
+            const {lat, lon} = await getUserLocation()
+            const countryCode = await getCountryCode(lat, lon);
+        
+            const labels = document.querySelectorAll('.label')
+            labels.forEach(label => {
+                label.style.visibility = 'visible';
+            });
+        
+            getMovieApi(movieName, countryCode);
+        } catch(err){
+            console.error(err);
+            alert("Could not access location. Please enable location services.");
+        }
+    }, 100);
 
-    getMovieApi(movieName, countryCode);
 };
 
 
