@@ -63,48 +63,14 @@ async function getMovieApi(movie, countryCode) {
                 freeRow.innerHTML = '';
                 buyRow.innerHTML = '';
                 
-
-                if(freeStream.length > 0){
-                    for(let i=0; i < freeStream.length; i++){
-                        const provider = freeStream[i].provider_name;
-                        const providerElement = document.createElement('div')
-                        providerElement.innerHTML = provider;
-
-                        const logoPath = freeStream[i].logo_path;
-                        const logo = document.createElement('img');
-                        logo.classList.add('logoImg')
-                        logo.src = `https://image.tmdb.org/t/p/w92${logoPath}`
-
-                        const wrapper = document.createElement('div');
-                        wrapper.classList.add('provider')
-                        wrapper.appendChild(logo);
-                        wrapper.appendChild(providerElement)
-                        freeRow.appendChild(wrapper)        
-                    }
-                }
-
-                if(toRent.length > 0){
-                    for(let i=0; i < toRent.length; i++){
-                        const providerRent = toRent[i].provider_name;
-                        const rentElement = document.createElement('div')
-                        rentElement.innerHTML = providerRent;
-
-                        const logoPath = toRent[i].logo_path;
-                        const logo = document.createElement('img');
-                        logo.classList.add('logoImg')
-                        logo.src = `https://image.tmdb.org/t/p/w92${logoPath}`
-                        
-
-                        const wrapper = document.createElement('div');
-                        wrapper.classList.add('provider')
-                        wrapper.appendChild(logo);
-                        wrapper.appendChild(rentElement)
-                        freeRow.appendChild(wrapper) 
-                    }
-                }
+                const shownProviders = new Set();
 
                 if(buyToStream.length > 0){
                     for(let i=0; i < buyToStream.length; i++){
+                        const id = buyToStream[i].provider_id;
+                        if(shownProviders.has(id)) continue;
+                        shownProviders.add(id);
+
                         const providerBuy = buyToStream[i].provider_name;
                         const buyElement = document.createElement('div')
                         buyElement.innerHTML = providerBuy;
@@ -123,6 +89,54 @@ async function getMovieApi(movie, countryCode) {
                         buyRow.appendChild(wrapper)            
                     }    
                 } 
+                
+                if(freeStream.length > 0){
+                    for(let i=0; i < freeStream.length; i++){
+                        const id = freeStream[i].provider_id;
+                        if(shownProviders.has(id)) continue;
+                        shownProviders.add(id);
+
+                        const provider = freeStream[i].provider_name;
+                        const providerElement = document.createElement('div');
+                        providerElement.innerHTML = provider;
+
+                        const logoPath = freeStream[i].logo_path;
+                        const logo = document.createElement('img');
+                        logo.classList.add('logoImg')
+                        logo.src = `https://image.tmdb.org/t/p/w92${logoPath}`
+
+                        const wrapper = document.createElement('div');
+                        wrapper.classList.add('provider')
+                        wrapper.appendChild(logo);
+                        wrapper.appendChild(providerElement)
+                        freeRow.appendChild(wrapper)        
+                    }
+                }
+
+                if(toRent.length > 0){
+                    for(let i=0; i < toRent.length; i++){
+                        const id = toRent[i].provider_id;
+                        if(shownProviders.has(id)) continue;
+                        shownProviders.add(id);
+
+                        const providerRent = toRent[i].provider_name;
+                        const rentElement = document.createElement('div')
+                        rentElement.innerHTML = providerRent;
+
+                        const logoPath = toRent[i].logo_path;
+                        const logo = document.createElement('img');
+                        logo.classList.add('logoImg')
+                        logo.src = `https://image.tmdb.org/t/p/w92${logoPath}`
+                        
+
+                        const wrapper = document.createElement('div');
+                        wrapper.classList.add('provider')
+                        wrapper.appendChild(logo);
+                        wrapper.appendChild(rentElement)
+                        freeRow.appendChild(wrapper) 
+                    }
+                }
+
             } else {
                 console.log('No streaming services available')
             }
