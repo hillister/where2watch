@@ -30,11 +30,6 @@ async function getMovieApi(movie, countryCode) {
         const movieData = await movieApiLink.json()
         const movieID = await movieData.results[0].id 
 
-        const watchProvider = await fetch(`https://api.themoviedb.org/3/movie/${movieID}/watch/providers?api_key=${apiKey}`)
-        const watchProviderData = await watchProvider.json()
-
-        console.log(watchProviderData)
-
         const title = document.getElementById('title');
         title.innerHTML = movieData.results[0].original_title;
 
@@ -50,29 +45,48 @@ async function getMovieApi(movie, countryCode) {
         poster.src = `https://image.tmdb.org/t/p/w500${posterURL}`;
         posterDIV.appendChild(poster);
 
-        const freeStream = watchProviderData.results[countryCode.toUpperCase()].flatrate;
-        const buyToStream = watchProviderData.results[countryCode.toUpperCase()].buy;
+        const watchProvider = await fetch(`https://api.themoviedb.org/3/movie/${movieID}/watch/providers?api_key=${apiKey}`)
+        const watchProviderData = await watchProvider.json()
 
-        if(freeStream){
-            for(let i=0; i < freeStream.length; i++){
-                console.log(freeStream[i].provider_name)
-                console.log(freeStream[i].logo_path)
-    
+        console.log(watchProviderData)
+
+        const countryData = watchProviderData.results[countryCode.toUpperCase()]
+
+        if(countryData){
+            const freeStream = countryData.flatrate || [];
+            const toRent = countryData.rent || [];
+            const buyToStream = countryData.buy || [];
+
+            if(freeStream.length > 0 || toRent.length > 0 || buyToStream.length > 0){
+                if(freeStream.length > 0){
+                    for(let i=0; i < freeStream.length; i++){
+                        console.log(freeStream[i].provider_name)
+                        console.log(freeStream[i].logo_path)
+            
+                    }
+                }
+
+                if(toRent.length > 0){
+                    for(let i=0; i < toRent.length; i++){
+                        console.log(toRent[i].provider_name)
+                        console.log(toRent[i].logo_path)
+            
+                    }
+                }
+
+                if(buyToStream.length > 0){
+                    for(let i=0; i < buyToStream.length; i++){
+                        console.log(buyToStream[i].provider_name)
+                        console.log(buyToStream[i].logo_path)
+                    }    
+                } 
+            } else {
+                console.log('No streaming services available')
             }
         } else {
-            console.log('No free streaming')
+            console.log('No country data available')
         }
-
-
-        if(buyToStream){
-            for(let i=0; i < buyToStream.length; i++){
-                console.log(buyToStream[i].provider_name)
-                console.log(buyToStream[i].logo_path)
-            }    
-        } else {
-            console,log('no where to buy')
-        }
-
+        
     } catch (err){
         console.error(err);
     }
