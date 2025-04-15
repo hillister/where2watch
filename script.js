@@ -38,9 +38,13 @@ async function getMovieApi(movie, countryCode) {
 
         const description = document.getElementById('description');
         description.innerHTML = movieData.results[0].overview;
-        console.log(movieData.results[0].original_title)
-        console.log(movieData.results[0].overview)
-        console.log(movieData.results[0].poster_path)
+
+        const containerDIV = document.querySelector('.container');
+
+        const posterURL = movieData.results[0].poster_path;
+        const poster = document.createElement('img');
+        poster.src = `https://image.tmdb.org/t/p/w500${posterURL}`;
+        containerDIV.appendChild(poster);
 
         const freeStream = watchProviderData.results[countryCode.toUpperCase()].flatrate;
         const buyToStream = watchProviderData.results[countryCode.toUpperCase()].buy;
